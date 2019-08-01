@@ -4,6 +4,9 @@
 #include "basic.h"
 using namespace std;
 
+bool isFilp=false;
+bool detFilp=false;
+
 void FreshMap(string cInMessage, string cOutMessage="")
 {
     int x1, y1;				//起点
@@ -129,23 +132,80 @@ void init()
     enemyChess::junqiEne = nullptr;
 }
 
+string fileOne(string pos,unsigned int begin=0)
+{
+    if(pos[begin]<'G')
+    {
+        int p='F'-pos[begin];
+        pos[begin]='G'+p;
+    }
+    else
+    {
+        int p='L'-pos[begin];
+        pos[begin]='A'+p;
+    }
+    return pos;
+}
+
+string filp(string pos,bool isDouble=true)
+{
+    if(!isDouble && pos=="00")
+        return pos;
+    else
+    {
+        if(!isDouble)
+            return fileOne(pos);
+        else
+        {
+            pos=fileOne(pos,0);
+            return fileOne(pos,2);
+        }
+    }
+}
+
 void move(int FirstMove, int isFirst,string i)
 {
     string pos = getParentheses(i,1);
     string result = getParentheses(i,2);
     string junqiPos = getParentheses(i,3);
 
+    if(isFilp)
+    {
+        pos=filp(pos);
+        junqiPos=filp(pos,false);
+    }
+
     if(isFirst==FirstMove) //为我方碰子结果
     {
+        if(!detFilp)
+        {
+            detFilp=true;
+            if(pos[0]<'G') //我方在上，需要翻转
+            {
+                isFilp=true;
+                pos=filp(pos);
+                junqiPos=filp(pos,false);
+            }
+        }
         cout<<"RESULT "+result+" "+junqiPos<<endl;
         cout<<"BESTMOVE "+pos<<endl;
         FreshMap("RESULT "+result+" "+junqiPos,"BESTMOVE "+pos);
         //fix:保存点
     }
-    else
+    else //对方行动
     {
-        cout<<"GO "+pos+" "+result+" "+junqiPos<<endl;
-        FreshMap("GO "+pos+" "+result+" "+junqiPos);
+        if(!detFilp)
+        {
+            detFilp=true;
+            if(pos[0]>'F') //敌方在下，需要翻转
+            {
+                isFilp=true;
+                pos=filp(pos);
+                junqiPos=filp(pos,false);
+            }
+        }
+        cout<<"GO "+pos+" "+result+" 00"<<endl;
+        FreshMap("GO "+pos+" "+result+" 00"); //因为棋谱中对方行动对应的是己方军旗位置，所以直接00
         //fix:保存点
     }
 }

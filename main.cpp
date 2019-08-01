@@ -6,6 +6,7 @@ using namespace std;
 
 bool isFilp=false;
 bool detFilp=false;
+bool findJunqi=false;
 
 void FreshMap(string cInMessage, string cOutMessage="")
 {
@@ -21,10 +22,12 @@ void FreshMap(string cInMessage, string cOutMessage="")
             y2 = cInMessage[5] - 'A';
             x2 = cInMessage[6] - '0';
             result = cInMessage[8] - '0';		//碰子结果
-            if (cInMessage[10] >= 'A' && cInMessage[10] <= 'L') //对方司令战死后显示军旗位置
+            if (!findJunqi && cInMessage[10] >= 'A' && cInMessage[10] <= 'L') //对方司令战死后显示军旗位置
             {
+                findJunqi=true;
                 enemyChess* c = ecOp::findChess(x1, y1);
-                c->determine(siling);
+                if(c!=nullptr)
+                    c->determine(siling);
                 int junqiY = cInMessage[10] - 'A';
                 int junqiX = cInMessage[11] - '0';
                 cMap[junqiY][junqiX] = 'L';
@@ -80,12 +83,14 @@ void FreshMap(string cInMessage, string cOutMessage="")
 
         //然后看看这个棋子的结果
         result = cInMessage[7] - '0'; //碰子结果
-        if (cInMessage[8] == ' ' && cInMessage[9] >= 'A' && cInMessage[9] <= 'L') //对方司令战死后显示军旗位置
+        if (!findJunqi && cInMessage[8] == ' ' && cInMessage[9] >= 'A' && cInMessage[9] <= 'L') //对方司令战死后显示军旗位置
         {
+            findJunqi=true;
             enemyChess* c = ecOp::findChess(x2, y2);
-            c->determine(siling);
-            int junqiY = cInMessage[10] - 'A';
-            int junqiX = cInMessage[11] - '0';
+            if(c!=nullptr)
+                c->determine(siling);
+            int junqiY = cInMessage[9] - 'A';
+            int junqiX = cInMessage[10] - '0';
             cMap[junqiY][junqiX] = 'L';
             c = ecOp::findChess(junqiX, junqiY);
             c->determine(junqi);
@@ -197,8 +202,8 @@ void move(int FirstMove, int isFirst,string i)
                 junqiPos=filp(pos,false);
             }
         }
-        cout<<"RESULT "+result+" "+junqiPos<<endl;
         cout<<"BESTMOVE "+pos<<endl;
+        cout<<"RESULT "+result+" "+junqiPos<<endl;
         FreshMap("RESULT "+result+" "+junqiPos,"BESTMOVE "+pos);
         //fix:保存点
     }

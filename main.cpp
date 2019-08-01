@@ -115,6 +115,20 @@ void FreshMap(string cInMessage, string cOutMessage="")
     }
 }
 
+void init()
+{
+    ecOp::search_depth = minDepth;
+    for (int i = 0; i <= 5; i++)
+    {
+        for (int j = 0; j <= 4; j++)
+        {
+            if (cMap[i][j] == 'X')
+                allEnemyChess.push_back(new enemyChess(j, i));
+        }
+    }
+    enemyChess::junqiEne = nullptr;
+}
+
 void move(int FirstMove, int isFirst,string i)
 {
     string pos = getParentheses(i,1);
@@ -123,11 +137,14 @@ void move(int FirstMove, int isFirst,string i)
 
     if(isFirst==FirstMove) //为我方碰子结果
     {
+        cout<<"RESULT "+result+" "+junqiPos<<endl;
+        cout<<"BESTMOVE "+pos<<endl;
         FreshMap("RESULT "+result+" "+junqiPos,"BESTMOVE "+pos);
         //fix:保存点
     }
     else
     {
+        cout<<"GO "+pos+" "+result+" "+junqiPos<<endl;
         FreshMap("GO "+pos+" "+result+" "+junqiPos);
         //fix:保存点
     }
@@ -151,6 +168,7 @@ int main()
             {
                 string array = getParentheses(i);
                 InitMap("ARRAY "+array);
+                init();
             }
         }
         if(i.substr(0,3)==";AB") //后手布局
@@ -159,15 +177,16 @@ int main()
             {
                 string array = getParentheses(i);
                 InitMap("ARRAY "+array);
+                init();
             }
         }
         if(i.substr(0,3)==";MA") //先手行棋
         {
-            move(true,isFirst,i);
+            move(1,isFirst,i);
         }
         if(i.substr(0,3)==";MB") //后手行棋
         {
-            move(false,isFirst,i);
+            move(0,isFirst,i);
         }
         if(i.substr(0,3)==";EA") //结果
         {
@@ -183,4 +202,6 @@ int main()
             }
         }
     }
+    int i;
+    cin>>i;
 }

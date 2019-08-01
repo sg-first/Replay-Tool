@@ -23,7 +23,7 @@ void FreshMap(string cInMessage, string cOutMessage="")
             result = cInMessage[8] - '0';		//碰子结果
             if (cInMessage[10] >= 'A' && cInMessage[10] <= 'L') //对方司令战死后显示军旗位置
             {
-                enemyChess* c = ecOp::findChess(x2, y2);
+                enemyChess* c = ecOp::findChess(x1, y1);
                 c->determine(siling);
                 int junqiY = cInMessage[10] - 'A';
                 int junqiX = cInMessage[11] - '0';

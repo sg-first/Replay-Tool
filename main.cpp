@@ -23,10 +23,12 @@ void FreshMap(string cInMessage, string cOutMessage="")
             result = cInMessage[8] - '0';		//碰子结果
             if (cInMessage[10] >= 'A' && cInMessage[10] <= 'L') //对方司令战死后显示军旗位置
             {
+                enemyChess* c = ecOp::findChess(x2, y2);
+                c->determine(siling);
                 int junqiY = cInMessage[10] - 'A';
                 int junqiX = cInMessage[11] - '0';
                 cMap[junqiY][junqiX] = 'L';
-                enemyChess* c = ecOp::findChess(junqiX, junqiY);
+                c = ecOp::findChess(junqiX, junqiY);
                 c->determine(junqi);
             }
 
@@ -79,7 +81,15 @@ void FreshMap(string cInMessage, string cOutMessage="")
         //然后看看这个棋子的结果
         result = cInMessage[7] - '0'; //碰子结果
         if (cInMessage[8] == ' ' && cInMessage[9] >= 'A' && cInMessage[9] <= 'L') //对方司令战死后显示军旗位置
-            cMap[(cInMessage[9] - 'A')][cInMessage[10] - '0'] = 'L';
+        {
+            enemyChess* c = ecOp::findChess(x2, y2);
+            c->determine(siling);
+            int junqiY = cInMessage[10] - 'A';
+            int junqiX = cInMessage[11] - '0';
+            cMap[junqiY][junqiX] = 'L';
+            c = ecOp::findChess(junqiX, junqiY);
+            c->determine(junqi);
+        }
         switch (result)		//根据不同结果修改棋盘
         {
         case 0:			//己方棋子被对方吃掉
@@ -262,6 +272,4 @@ int main()
             }
         }
     }
-    int i;
-    cin>>i;
 }

@@ -205,7 +205,7 @@ void move(int FirstMove, int isFirst,string i)
         cout<<"BESTMOVE "+pos<<endl;
         cout<<"RESULT "+result+" "+junqiPos<<endl;
         FreshMap("RESULT "+result+" "+junqiPos,"BESTMOVE "+pos);
-        //fix:保存点
+        //fix:保存状态
     }
     else //对方行动
     {
@@ -221,7 +221,7 @@ void move(int FirstMove, int isFirst,string i)
         }
         cout<<"GO "+pos+" "+result+" 00"<<endl;
         FreshMap("GO "+pos+" "+result+" 00"); //因为棋谱中对方行动对应的是己方军旗位置，所以直接00
-        //fix:保存点
+        //fix:保存状态
     }
 }
 
@@ -268,12 +268,12 @@ int main()
             if(isFirst==1)
             {
                 string result = getParentheses(i,1);
-                //fix:保存
+                //fix:保存对局结果
             }
             else
             {
                 string result = getParentheses(i,2);
-                //fix:保存
+                //fix:保存对局结果
             }
         }
     }

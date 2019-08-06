@@ -7,7 +7,7 @@ using namespace std;
 
 bool isFilp = false;
 bool detFilp = false;
-bool findJunqi = false;
+bool isFindJunqi = false;
 
 int rounds = 0;
 
@@ -34,10 +34,10 @@ void outputAllneeds()		//此输出函数使用$号作为分割表格的标志
 	}
 	content1 += "$";
 	writeFile("特种兵的日记.txt", content1);
-	for (int i = 0; i < size(allEnemyChess); i++)		//输出概率表
+    for (unsigned int i = 0; i < allEnemyChess.size(); i++)		//输出概率表
 	{
 		float sum = (allEnemyChess[i]->sum());
-		for (int j = 0; j < 12; j++)
+        for (unsigned int j = 0; j < 12; j++)
 		{
 			content2 += to_string((allEnemyChess[i]->prob[j]) / sum) + " ";
 		}
@@ -45,7 +45,7 @@ void outputAllneeds()		//此输出函数使用$号作为分割表格的标志
 	}
 	content2 += "$";
 	writeFile("特种兵的日记.txt", content2);
-	for (int i = 0; i < size(allEnemyChess); i++)		//输出敌方棋子位置
+    for (unsigned int i = 0; i < allEnemyChess.size(); i++)		//输出敌方棋子位置
 	{
 		content3 += to_string(allEnemyChess[i]->y) + " " + to_string(allEnemyChess[i]->x) + " ";		//此处按照先行后列进行输出
 		content3 += "\n";
@@ -89,9 +89,9 @@ void FreshMap(string cInMessage, string cOutMessage = "")
 			y2 = cInMessage[5] - 'A';
 			x2 = cInMessage[6] - '0';
 			result = cInMessage[8] - '0';		//碰子结果
-			if (!findJunqi && cInMessage[10] >= 'A' && cInMessage[10] <= 'L') //对方司令战死后显示军旗位置
+            if (!isFindJunqi && cInMessage[10] >= 'A' && cInMessage[10] <= 'L') //对方司令战死后显示军旗位置
 			{
-				findJunqi = true;
+                isFindJunqi = true;
 				enemyChess* c = ecOp::findChess(x1, y1);
 				if (c != nullptr)
 					c->determine(siling);
@@ -150,9 +150,9 @@ void FreshMap(string cInMessage, string cOutMessage = "")
 
 		//然后看看这个棋子的结果
 		result = cInMessage[7] - '0'; //碰子结果
-		if (!findJunqi && cInMessage[8] == ' ' && cInMessage[9] >= 'A' && cInMessage[9] <= 'L') //对方司令战死后显示军旗位置
+        if (!isFindJunqi && cInMessage[8] == ' ' && cInMessage[9] >= 'A' && cInMessage[9] <= 'L') //对方司令战死后显示军旗位置
 		{
-			findJunqi = true;
+            isFindJunqi = true;
 			enemyChess* c = ecOp::findChess(x2, y2);
 			if (c != nullptr)
 				c->determine(siling);
@@ -346,4 +346,5 @@ int main()
 			}
 		}
 	}
+    cout<<"[finish]"<<endl;
 }

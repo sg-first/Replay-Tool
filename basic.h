@@ -199,9 +199,9 @@ int IsEngineerRailway(int i, int j)
     else
         return 0;
 }
-int shortestpathtojunqi(int i, int j)
+int getDist(int i, int j, int i2, int j2)
 {
-    return abs(11 - i) + abs(3 - j); //未考虑斜向路线
+    return abs(i2 - i) + abs(j2 - j); //未考虑斜向路线
 }
 /* ************************************************************************ */
 /* 函数功能：双方布局后棋局初始化（完成）										*/
@@ -224,6 +224,15 @@ void InitMap(string cOutMessage) //这个是用之前计算好的数据处理，
                 cMap[i][j] = '0';
             else
                 cMap[i][j] = cOutMessage[k++];
+}
+
+pos findJunqi()
+{
+    for (unsigned int i = 0;i < 12;i++)
+        for (unsigned int j = 0;j < 5;j++)
+            if(cMap[i][j]=='l')
+                return make_tuple(i,j);
+    return make_tuple(-1,-1);
 }
 
 vector<pos> getNearPos(int i, int j)

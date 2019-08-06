@@ -10,4 +10,5 @@ HEADERS += \
     help.h \
     parse.h \
     basic.h \
-    reasoning.h
+    reasoning.h \
+    assess.h

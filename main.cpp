@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 #include "help.h"
 #include "parse.h"
 #include "basic.h"
@@ -7,7 +8,6 @@ using namespace std;
 
 bool isFilp = false;
 bool detFilp = false;
-bool isFindJunqi = false;
 
 int rounds = 0;
 
@@ -89,12 +89,10 @@ void FreshMap(string cInMessage, string cOutMessage = "")
 			y2 = cInMessage[5] - 'A';
 			x2 = cInMessage[6] - '0';
 			result = cInMessage[8] - '0';		//碰子结果
-            if (!isFindJunqi && cInMessage[10] >= 'A' && cInMessage[10] <= 'L') //对方司令战死后显示军旗位置
+            if (enemyChess::junqiEne == nullptr && cInMessage[10] >= 'A' && cInMessage[10] <= 'L') //对方司令战死后显示军旗位置
 			{
-                isFindJunqi = true;
-				enemyChess* c = ecOp::findChess(x1, y1);
-				if (c != nullptr)
-					c->determine(siling);
+                enemyChess* c = ecOp::findChess(x1, y1);
+                c->determine(siling);
 				int junqiY = cInMessage[10] - 'A';
 				int junqiX = cInMessage[11] - '0';
 				cMap[junqiY][junqiX] = 'L';
@@ -150,16 +148,15 @@ void FreshMap(string cInMessage, string cOutMessage = "")
 
 		//然后看看这个棋子的结果
 		result = cInMessage[7] - '0'; //碰子结果
-        if (!isFindJunqi && cInMessage[8] == ' ' && cInMessage[9] >= 'A' && cInMessage[9] <= 'L') //对方司令战死后显示军旗位置
+        if (enemyChess::junqiEne == nullptr && cInMessage[8] == ' ' && cInMessage[9] >= 'A' && cInMessage[9] <= 'L') //对方司令战死后显示军旗位置
 		{
-            isFindJunqi = true;
-			enemyChess* c = ecOp::findChess(x2, y2);
-			if (c != nullptr)
-				c->determine(siling);
+            //由于复盘情况下，根据单回合战报无法确认司令是被我方主动吃掉的还是敌方自杀的，因此这里不确定司令
+            /*enemyChess* c = ecOp::findChess(x2, y2);
+            c->determine(siling);*/
 			int junqiY = cInMessage[9] - 'A';
 			int junqiX = cInMessage[10] - '0';
 			cMap[junqiY][junqiX] = 'L';
-			c = ecOp::findChess(junqiX, junqiY);
+            enemyChess* c = ecOp::findChess(junqiX, junqiY);
 			c->determine(junqi);
 		}
 		switch (result)		//根据不同结果修改棋盘
@@ -320,6 +317,7 @@ int main()
 			if (isFirst == 0)
 			{
 				string array = getParentheses(i);
+                reverse(array.begin(),array.end());
 				InitMap("ARRAY " + array);
 				init();
 			}

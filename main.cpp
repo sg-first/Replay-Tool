@@ -254,7 +254,7 @@ void move(int FirstMove, int isFirst, string i)
 	if (isFilp)
 	{
 		pos = filp(pos);
-		junqiPos = filp(pos, false);
+        junqiPos = filp(junqiPos, false);
 	}
 
 	if (isFirst == FirstMove) //为我方碰子结果
@@ -266,7 +266,7 @@ void move(int FirstMove, int isFirst, string i)
 			{
 				isFilp = true;
 				pos = filp(pos);
-				junqiPos = filp(pos, false);
+                junqiPos = filp(junqiPos, false);
 			}
 		}
 		cout << "BESTMOVE " + pos << endl;
@@ -284,7 +284,7 @@ void move(int FirstMove, int isFirst, string i)
 			{
 				isFilp = true;
 				pos = filp(pos);
-				junqiPos = filp(pos, false);
+                junqiPos = filp(junqiPos, false);
 			}
 		}
 		cout << "GO " + pos + " " + result + " 00" << endl;

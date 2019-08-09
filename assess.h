@@ -3,7 +3,6 @@
 #include "reasoning.h"
 #include "basic.h"
 
-extern float ff1, ff2, ff3, ff4, ff5, ff6;
 float eneMax = 0;
 
 class assess

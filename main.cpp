@@ -20,13 +20,13 @@ void outputAllneeds()		//此输出函数使用$号作为分割表格的标志
 		for (int j = 0; j <= 4; j++)
 		{
 			if ((char(cMap[i][j]) >= 'A') && (char(cMap[i][j]) <= 'Z'))
-				content1 += string(1, char(49)) + string(1, char(51)) + " ";
+                content1 += "13 ";
 			else if ((char(cMap[i][j]) == 'j'))
-				content1 += string(1, char(49)) + string(1, char(48)) + " ";
+                content1 += "10 ";
 			else if ((char(cMap[i][j]) == 'k'))
-				content1 += string(1, char(49)) + string(1, char(49)) + " ";
+                content1 += "11 ";
 			else if ((char(cMap[i][j]) == 'l'))
-				content1 += string(1, char(49)) + string(1, char(50)) + " ";
+                content1 += "12 ";
 			else
 				content1 += string(1, char(cMap[i][j]) - 48) + " ";
 		}
@@ -223,6 +223,16 @@ string fileOne(string pos, unsigned int begin = 0)
 		int p = 'L' - pos[begin];
 		pos[begin] = 'A' + p;
 	}
+    if(pos[begin+1] < '2')
+    {
+        int p = '2' - pos[begin+1];
+        pos[begin+1] = '2' + p;
+    }
+    else
+    {
+        int p = pos[begin+1] - '2';
+        pos[begin+1] = '2' - p;
+    }
 	return pos;
 }
 
